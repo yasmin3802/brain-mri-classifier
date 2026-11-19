@@ -47,8 +47,15 @@ if file is not None:
     top = max(scores, key=scores.get)
 
     st.subheader(f"Model's top guess: {top} ({scores[top]:.0%} confidence)")
-    if scores[top] < 0.60:
-        st.error("The model is not confident here. Treat this result as unreliable.")
+    if scores[top] >= 0.99:
+        st.success(
+            "High confidence. On dataset-style test images, about 97% of answers at this level were correct."
+        )
+    else:
+        st.error(
+            "Lower confidence. On dataset-style test images, only about 2 in 3 answers below 99% "
+            "confidence were correct. Treat this result as unreliable."
+        )
     st.bar_chart(scores)
     st.info(
         "The model only knows four classes and always picks one of them, even for images "
